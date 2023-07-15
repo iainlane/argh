@@ -1,8 +1,8 @@
 package main
 
 /*
-#cgo CFLAGS:-I${SRCDIR}/c/
-#cgo LDFLAGS:-L${SRCDIR}/build/ -Wl,-rpath,${SRCDIR}/build/ -lmyc
+#cgo CFLAGS:-I${SRCDIR}/c/ -I${SRCDIR}/build/
+#cgo LDFLAGS:-L${SRCDIR}/build/  -Wl,-rpath,${SRCDIR}/build -lmycso
 
 #include <stdlib.h>
 #include "callgofunction.h"

@@ -14,8 +14,11 @@ jobs:
             check-latest: true
         - name: Build
           run: |
-            sudo apt update && sudo apt -y install cmake gdb
+            sudo apt update && sudo apt -y install check cmake gdb
             cmake -B build && cmake --build build
+        - name: Run tests
+          run: |
+            build/tests/c_api_tests
         - name: Build and run under gdb
           env:
             GODEBUG: "cgocheck=2"

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(SimpleDanceSolver VERSION 0.0 LANGUAGES C)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 find_program(GO_EXECUTABLE go)
 if (GO_EXECUTABLE-NOTFOUND)
     message(FATAL_ERROR "Go not found! Please install Go.")
@@ -18,13 +20,21 @@ add_custom_command(
     COMMAND ${GO_EXECUTABLE} build -a -buildmode=c-archive -o ${GO_OUTPUT_A}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gofunction/
     COMMENT "Building gofunction binding"
+    DEPENDS gofunction/gofunction.go
     VERBATIM
 )
 
 add_custom_target(go_package DEPENDS ${GO_OUTPUT_A} ${GO_OUTPUT_H})
 
+include_directories(${CMAKE_SOURCE_DIR}/c)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(myc SHARED c/callgofunction.c)
+add_library(myc STATIC c/callgofunction.c)
 add_dependencies(myc go_package)
 target_link_libraries(myc ${GO_OUTPUT_A})
+
+add_library(mycso SHARED c/callgofunction.c)
+add_dependencies(mycso go_package)
+target_link_libraries(mycso ${GO_OUTPUT_A})
+
+add_subdirectory(tests)

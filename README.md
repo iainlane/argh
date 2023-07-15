@@ -15,7 +15,9 @@ a Handle pointing to a logrus.Entry into C, so that the C part of my program can
 call the same loggers as the Go part. This is a simplified version of that which
 breaks in the same way.
 
-Here's the backtrace. It's also running in GH Actions in this repo.
+Here's the backtrace. It's also running in GH Actions in this repo. In there is
+also a C testcase which calls the exported Go function via its C wrapper, and
+that works fine. It's really when we go back into Go from C that it breaks.
 
 ```
 Thread 3 "main" received signal SIGSEGV, Segmentation fault.
