@@ -17,6 +17,8 @@ jobs:
             sudo apt update && sudo apt -y install cmake gdb
             cmake -B build && cmake --build build
         - name: Build and run under gdb
+          env:
+            GODEBUG: "cgocheck=2"
           run: |
             go build -gcflags=all="-N -l" -o build/main main.go
             gdb -batch -ex "set startup-with-shell off" -ex "file build/main" -ex "run" -ex "t a a bt full" -ex "quit"

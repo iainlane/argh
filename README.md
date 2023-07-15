@@ -1,12 +1,21 @@
-Not sure what's going on here.
-
 This repo:
 
-  * Builds a static library (gofunction.a) containing an empty Go function
-  * Links that into a C library which calls the Go function
-  * Calls that from a main package
+  * Builds a static library (gofunction.a) from am Go package (`gofunction/`)
+    which exports an empty Go function `GoFunction`
+  * Links that into a C library (`c/`) which exports a function that simply
+    calls the empty Go funtion.
+  * Then has a `main` package which has a function
+    `callCFunctionWhichCallsGoFunction` that calls the C function using Cgo. But
+    that function is not actually called from `main()`.
 
-When you run the thing it crashes:
+it crashes with a segfault.
+
+So we have Go -> C -> Go. The real version of this problem is me trying to pass
+a Handle pointing to a logrus.Entry into C, so that the C part of my program can
+call the same loggers as the Go part. This is a simplified version of that which
+breaks in the same way.
+
+Here's the backtrace. It's also running in GH Actions in this repo.
 
 ```
 Thread 3 "main" received signal SIGSEGV, Segmentation fault.

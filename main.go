@@ -10,7 +10,7 @@ package main
 import "C"
 
 // this function is not called
-func isDancePerformed() {
+func callCFunctionWhichCallsGoFunction() {
 	C.call_go_function()
 }
 
