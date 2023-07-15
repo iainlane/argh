@@ -1,3 +1,49 @@
+# Solved
+
+This turned out to be great rubber duck! The missing thing was setting
+`-Wl,-Bsymbolic-functions` when building the intermediate C library.
+
+This means that symbol lookup will happen globally, and not locally. This is
+important because trying to run multiple copies of the Go runtime in the same
+process does not play well, and so the C library needs to use the same one as
+the main program.
+
+# Email
+
+I wrote out this email which led me to the realisation:
+
+> Hello folks,
+> 
+> I'm a bit new to using CGo and I've come across a situation I don't know how
+> to get myself out of.
+> 
+> I've got a project with a Go part and a C (actually C++ but I don't think that
+> matters) part. The Go part needs to be able to call parts of the C API; that
+> bit works fine. But I also would like to export some Go functions so that they
+> can be used by the C code (I want to share logrus loggers).
+> 
+> I use `buildmode=c-archive` to build a static library exporting `Handler`s
+> which can be used to call the functions I need. I link that into the C portion
+> of the code. The testsuite on the C side can call those Go functions just
+> fine. Log messages appear like you would expect.
+> 
+> But then when I link that C library to my Go program, the program segfaults
+> some time in early initialisation, before any of my code is run as far as I
+> can tell. The C code does not even need to be called by the Go code - as long
+> as it is referenced in any way the program will crash.
+> 
+> I have managed to break this down to a fairly minimal example which I pushed
+> to a repo. There's an action set up in it which shows the problem happening.
+> 
+> Any advice appreciated, cheers!
+> Iain
+
+But I didn't actually need to send it. 👍
+
+# The problem
+
+_Left around for interest._
+
 This repo:
 
   * Builds a static library (gofunction.a) from am Go package (`gofunction/`)

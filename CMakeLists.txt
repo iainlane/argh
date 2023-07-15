@@ -29,6 +29,9 @@ add_custom_target(go_package DEPENDS ${GO_OUTPUT_A} ${GO_OUTPUT_H})
 include_directories(${CMAKE_SOURCE_DIR}/c)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
+# add -Wl,-Bsymbolic to avoid multiple Go runtime instances
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-Bsymbolic-functions")
+
 add_library(myc STATIC c/callgofunction.c)
 add_dependencies(myc go_package)
 target_link_libraries(myc ${GO_OUTPUT_A})

@@ -25,4 +25,3 @@ jobs:
           run: |
             go build -gcflags=all="-N -l" -o build/main main.go
             gdb -batch -ex "set startup-with-shell off" -ex "file build/main" -ex "run" -ex "t a a bt full" -ex "quit"
-            exit 1
